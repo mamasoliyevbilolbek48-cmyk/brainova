@@ -1,122 +1,335 @@
-
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Brainova | Bilim olami</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #0b1020;
-      color: #f4f7ff;
-    }
-    header {
-      padding: 22px 16px;
-      text-align: center;
-      background: #151d35;
-      border-bottom: 1px solid #303b5c;
-    }
-    header h1 { color: #7cdbff; margin: 0; font-size: 32px; }
-    header p { color: #b9c6e5; }
-    main { max-width: 720px; margin: auto; padding: 18px; }
-    .hero, .card {
-      background: #151d35;
-      border: 1px solid #303b5c;
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 16px;
-    }
-    .hero { text-align: center; }
-    h2 { color: #7cdbff; }
-    button {
-      background: #61d5ff;
-      color: #07111e;
-      border: 0;
-      border-radius: 10px;
-      padding: 12px 16px;
-      font-size: 16px;
-      font-weight: bold;
-      margin: 5px 3px;
-      cursor: pointer;
-    }
-    input {
-      width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border-radius: 8px;
-      border: 1px solid #657393;
-      font-size: 16px;
-    }
-    .muted { color: #b9c6e5; line-height: 1.6; }
-    #result, #logicResult { color: #7cdbff; font-weight: bold; }
-    footer { text-align: center; color: #b9c6e5; padding: 20px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080d1d">
+<title>Brainova — O‘yla. O‘rgan. Rivojlan.</title>
+<style>
+:root {
+  --bg:#080d1d; --panel:#111a31; --line:#26395c;
+  --text:#eef5ff; --muted:#aab9d6; --neon:#61dcff;
+  --green:#70f0bd; --pink:#ff8acb;
+}
+* { box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body {
+  margin:0; color:var(--text);
+  font-family:system-ui,Arial,sans-serif; line-height:1.55;
+  background:radial-gradient(ellipse at top,#14264b,#080d1d 60%);
+}
+button,input { font:inherit; }
+button { cursor:pointer; }
+.wrap { width:min(100% - 26px,950px); margin:auto; }
+header {
+  padding:24px 0 18px; text-align:center;
+  background:#0c1428; border-bottom:1px solid var(--line);
+}
+.logo { font-size:2.7rem; font-weight:900; color:var(--neon); margin:0; }
+.tagline { color:var(--muted); margin:0; }
+nav { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:16px; }
+nav a {
+  color:var(--text); text-decoration:none; padding:8px 12px;
+  border:1px solid var(--line); border-radius:20px; background:#101b34;
+}
+main { padding:22px 0 40px; }
+.hero,.panel {
+  background:linear-gradient(145deg,#131e38,#0d1529);
+  border:1px solid var(--line); border-radius:20px;
+  padding:22px; margin-bottom:18px;
+}
+.hero { text-align:center; }
+h1,h2,h3 { line-height:1.25; }
+h1,h2 { color:var(--neon); }
+.hero h1 { font-size:clamp(1.6rem,5vw,2.3rem); }
+.muted { color:var(--muted); }
+.btn {
+  border:0; border-radius:12px; padding:11px 16px;
+  background:var(--neon); color:#061020; font-weight:800;
+}
+.btn.secondary { background:#182847; color:var(--text); border:1px solid #344b73; }
+.btn:disabled { opacity:.45; cursor:not-allowed; }
+.actions { display:flex; flex-wrap:wrap; justify-content:center; gap:10px; }
+.actions a { text-decoration:none; }
+.stats { display:grid; grid-template-columns:repeat(3,1fr); gap:9px; margin:16px 0; }
+.stat { text-align:center; background:#0a1225; border:1px solid var(--line); border-radius:13px; padding:10px 5px; }
+.stat strong { display:block; color:var(--neon); font-size:1.4rem; }
+.stat span { color:var(--muted); font-size:.8rem; }
+.progress { height:8px; background:#26324b; border-radius:20px; overflow:hidden; margin:12px 0; }
+.progress span { display:block; height:100%; width:0; background:linear-gradient(90deg,#398bff,var(--neon)); }
+.sample,.notice { padding:13px; background:#080f20; border:1px solid var(--line); border-radius:12px; }
+input[type=text] {
+  width:100%; margin:12px 0; padding:13px; color:var(--text);
+  background:#080f20; border:1px solid #344b73; border-radius:12px;
+}
+.question { font-size:1.12rem; font-weight:750; margin:15px 0; }
+.choices { display:grid; gap:9px; margin:14px 0; }
+.choice {
+  width:100%; text-align:left; color:var(--text); background:#0a1327;
+  border:1px solid #304364; border-radius:12px; padding:12px;
+}
+.choice:hover:not(:disabled) { border-color:var(--neon); }
+.choice.correct { border-color:var(--green); background:#10352e; }
+.choice.wrong { border-color:var(--pink); background:#351a32; }
+.notice { margin:12px 0; color:var(--muted); min-height:44px; }
+.grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+.card { padding:14px; background:#0a1327; border:1px solid var(--line); border-radius:14px; }
+.emoji { font-size:1.5rem; }
+.task { display:flex; gap:10px; align-items:flex-start; }
+.task input { margin-top:5px; accent-color:var(--neon); width:18px; height:18px; }
+.task.done { border-color:#287c6a; }
+.task.done span { text-decoration:line-through; color:var(--muted); }
+.pill { display:inline-block; background:#152849; color:var(--neon); border-radius:20px; padding:3px 9px; }
+footer { text-align:center; color:var(--muted); padding:16px 0 28px; }
+@media(max-width:560px) {
+  .grid { grid-template-columns:1fr; }
+  .hero,.panel { padding:17px; }
+  .actions .btn { flex:1; }
+}
+</style>
 </head>
 <body>
-  <header>
-    <h1>🧠 Brainova</h1>
-    <p>O‘yla. O‘rgan. Rivojlan.</p>
-  </header>
+<header>
+  <div class="wrap">
+    <p class="logo">🧠 Brainova</p>
+    <p class="tagline">O‘yla. O‘rgan. Rivojlan.</p>
+    <nav>
+      <a href="#typing">⌨️ Typing test</a>
+      <a href="#logic">🧩 Mantiqiy test</a>
+      <a href="#facts">🔬 Ilmiy faktlar</a>
+      <a href="#daily">🎯 Kunlik vazifalar</a>
+    </nav>
+  </div>
+</header>
 
-  <main>
-    <section class="hero">
-      <h2>Bilim olamiga xush kelibsiz!</h2>
-      <p class="muted">Mantiqingizni sinang, yozish tezligingizni tekshiring va yangi ilmiy faktlarni o‘rganing.</p>
-      <button onclick="document.getElementById('typing').scrollIntoView()">Typing test</button>
-      <button onclick="document.getElementById('logic').scrollIntoView()">Mantiqiy test</button>
-      <button onclick="document.getElementById('facts').scrollIntoView()">Ilmiy faktlar</button>
-    </section>
+<main class="wrap">
+  <section class="hero">
+    <h1>Bilim olamiga xush kelibsiz!</h1>
+    <p class="muted">Mantiqingizni sinang, tez yozishni mashq qiling va ilmiy faktlarni o‘rganing.</p>
+    <div class="stats">
+      <div class="stat"><strong id="totalPoints">0</strong><span>Jami ball</span></div>
+      <div class="stat"><strong id="level">1</strong><span>Daraja</span></div>
+      <div class="stat"><strong id="completed">0</strong><span>Tugagan testlar</span></div>
+    </div>
+    <p class="muted" id="levelHint">Keyingi daraja uchun 100 ball to‘pla.</p>
+    <div class="progress"><span id="levelProgress"></span></div>
+    <div class="actions">
+      <a class="btn" href="#logic">Testni boshlash</a>
+      <a class="btn secondary" href="#daily">Kunlik vazifalar</a>
+    </div>
+  </section>
 
-    <section class="card" id="typing">
-      <h2>⌨️ Typing test</h2>
-      <p id="sample" class="muted">Bilim insonni yangi imkoniyatlar sari yetaklaydi.</p>
-      <input id="typingInput" placeholder="Yuqoridagi matnni shu yerga yozing">
-      <button onclick="checkTyping()">Natijani tekshirish</button>
-      <p id="result"></p>
-    </section>
+  <section class="panel" id="typing">
+    <h2>⌨️ Typing test</h2>
+    <p class="muted">Matnni ko‘chirib yoz. Sinov 60 soniyagacha davom etadi.</p>
+    <div class="sample" id="typingSample">Bilim olish uchun qiziqish, sabr va muntazam mashq kerak.</div>
+    <input id="typingInput" type="text" placeholder="Matnni shu yerga yoz..." autocomplete="off">
+    <div class="stats">
+      <div class="stat"><strong id="timeLeft">60</strong><span>Qolgan soniya</span></div>
+      <div class="stat"><strong id="wpm">0</strong><span>So‘z/min (WPM)</span></div>
+      <div class="stat"><strong id="accuracy">100%</strong><span>Aniqlik</span></div>
+    </div>
+    <div class="notice" id="typingMessage">Boshlash uchun yozishni boshlang.</div>
+    <button class="btn secondary" id="typingReset">Qayta boshlash</button>
+  </section>
 
-    <section class="card" id="logic">
-      <h2>🧩 Mantiqiy test</h2>
-      <p>2, 4, 8, 16, ?</p>
-      <button onclick="logicAnswer(24)">24</button>
-      <button onclick="logicAnswer(32)">32</button>
-      <button onclick="logicAnswer(18)">18</button>
-      <p id="logicResult"></p>
-    </section>
+  <section class="panel" id="logic">
+    <h2>🧩 Mantiqiy test</h2>
+    <p class="muted">20 ta savol. Har bir to‘g‘ri javob uchun 10 ball!</p>
+    <p><span class="pill" id="qCounter">1 / 20-savol</span> <span class="pill" id="logicScore">Ball: 0</span></p>
+    <div class="progress"><span id="logicProgress"></span></div>
+    <div class="question" id="questionText"></div>
+    <div class="choices" id="choices"></div>
+    <div class="notice" id="logicFeedback">Javob variantlaridan birini tanlang.</div>
+    <button class="btn" id="nextQuestion" disabled>Keyingi savol →</button>
+    <button class="btn secondary" id="restartLogic" style="margin-top:8px">Qaytadan boshlash</button>
+  </section>
 
-    <section class="card" id="facts">
-      <h2>🔬 Ilmiy faktlar</h2>
-      <p class="muted">🌌 Yorug‘lik Quyoshdan Yerga taxminan 8 daqiqa 20 soniyada yetib keladi.</p>
-      <p class="muted">🐙 Ahtapotning uchta yuragi bor.</p>
-      <p class="muted">🌍 Yer o‘z o‘qi atrofida aylanishi sababli kun va tun almashinadi.</p>
-    </section>
-  </main>
+  <section class="panel" id="facts">
+    <h2>🔬 Ilmiy faktlar</h2>
+    <div class="grid">
+      <article class="card"><div class="emoji">🌌</div><h3>Koinot</h3><p>Koinot kengayib bormoqda. Galaktikalar yorug‘ligi bu jarayonni o‘rganishga yordam beradi.</p></article>
+      <article class="card"><div class="emoji">🧠</div><h3>Miya</h3><p>Inson miyasi milliardlab nerv hujayralari — neyronlardan tashkil topgan.</p></article>
+      <article class="card"><div class="emoji">🐙</div><h3>Oktopus</h3><p>Oktopusning uchta yuragi bor.</p></article>
+      <article class="card"><div class="emoji">🌱</div><h3>Fotosintez</h3><p>O‘simliklar yorug‘lik energiyasidan foydalanib shakar hosil qiladi.</p></article>
+      <article class="card"><div class="emoji">💧</div><h3>Suv</h3><p>Oddiy atmosfera bosimida sof suv 0°C atrofida muzlaydi va 100°C da qaynaydi.</p></article>
+      <article class="card"><div class="emoji">🪐</div><h3>Saturn</h3><p>Saturnning o‘rtacha zichligi suvnikidan kichik, ammo u gazlardan tashkil topgan ulkan sayyoradir.</p></article>
+    </div>
+  </section>
 
-  <footer>© 2026 Brainova · Bilim sari bir qadam</footer>
+  <section class="panel" id="daily">
+    <h2>🎯 Kunlik topshiriqlar</h2>
+    <p class="muted">Bajarilgan har bir vazifa uchun 5 ball.</p>
+    <div class="grid" id="dailyTasks">
+      <label class="card task"><input type="checkbox" data-task="0"><span>🧩 5 ta mantiqiy savolga javob ber.</span></label>
+      <label class="card task"><input type="checkbox" data-task="1"><span>⌨️ Typing testni sinab ko‘r.</span></label>
+      <label class="card task"><input type="checkbox" data-task="2"><span>🔬 Ikki ilmiy faktni o‘qi.</span></label>
+      <label class="card task"><input type="checkbox" data-task="3"><span>📚 Bugun yangi narsa o‘rgan.</span></label>
+    </div>
+    <div class="notice" id="dailyMessage">Bugun nechta vazifani bajara olasan?</div>
+  </section>
+</main>
+<footer class="wrap">🧠 Brainova — har kuni o‘rgan, har kuni rivojlan.</footer>
 
-  <script>
-    function checkTyping() {
-      const sample = document.getElementById('sample').textContent;
-      const typed = document.getElementById('typingInput').value;
-      const correct = [...typed].filter((c, i) => c === sample[i]).length;
-      const accuracy = typed.length
-        ? Math.round(correct / Math.max(typed.length, sample.length) * 100)
-        : 0;
-      document.getElementById('result').textContent =
-        typed === sample
-          ? 'Ajoyib! Matn to‘g‘ri yozildi!'
-          : 'Aniqlik: ' + accuracy + '%. Matnni yana urinib ko‘ring!';
-    }
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+let points=0, completed=0, qIndex=0, logicPoints=0, answered=false;
+let time=60,timer=null,started=false,ended=false,startTime=0;
+const KEY='brainova-progress-v1';
 
-    function logicAnswer(answer) {
-      document.getElementById('logicResult').textContent =
-        answer === 32 ? 'To‘g‘ri! Har safar son 2 ga ko‘paymoqda. 🎉'
-        : 'Yana urinib ko‘ring!';
-    }
-  </script>
+const questions=[
+{q:'Ketma-ketlikni davom ettir: 2, 4, 8, 16, ...',a:['18','24','32','36'],c:2,e:'Har safar 2 ga ko‘payadi: 16 × 2 = 32.'},
+{q:'Qaysi biri boshqalardan farq qiladi?',a:['Olma','Nok','Sabzi','Shaftoli'],c:2,e:'Sabzi sabzavot, qolganlari meva.'},
+{q:'3 ta mushuk 3 ta sichqonni 3 daqiqada tutsa, 1 ta mushuk 1 ta sichqonni qancha vaqtda tutadi?',a:['1 daqiqa','3 daqiqa','9 daqiqa','3 soniya'],c:1,e:'Bitta mushuk bitta sichqonni 3 daqiqada tutadi.'},
+{q:'Bir haftada nechta kun bor?',a:['5','6','7','8'],c:2,e:'Bir haftada 7 kun bor.'},
+{q:'Ketma-ketlik: 1, 3, 5, 7, ...',a:['8','9','10','11'],c:1,e:'Har safar 2 qo‘shiladi. Javob 9.'},
+{q:'Qaysi shaklning 3 ta tomoni bor?',a:['Doira','Kvadrat','Uchburchak','Beshburchak'],c:2,e:'Uchburchakning uchta tomoni bor.'},
+{q:'Bugun seshanba bo‘lsa, 2 kundan keyin qaysi kun?',a:['Chorshanba','Payshanba','Juma','Yakshanba'],c:1,e:'Seshanbadan keyin payshanba ikki kun o‘tib keladi.'},
+{q:'10 ning yarmiga 3 qo‘shilsa, nechchi bo‘ladi?',a:['5','8','13','7'],c:1,e:'10 ÷ 2 = 5; 5 + 3 = 8.'},
+{q:'Qaysi son toq?',a:['2','4','6','9'],c:3,e:'9 toq son, qolganlari juft.'},
+{q:'5 ta qalamdan 2 tasini berding. Nechta qoldi?',a:['2','3','5','7'],c:1,e:'5 − 2 = 3.'},
+{q:'Ketma-ketlik: 10, 20, 30, 40, ...',a:['41','45','50','60'],c:2,e:'Har safar 10 qo‘shiladi. Javob 50.'},
+{q:'Chumchuq — qush. Qushlarda nima bor?',a:['Shox','Qanot','Tangacha','Olti oyoq'],c:1,e:'Qushlarning qanotlari bor.'},
+{q:'Bir yilda nechta oy bor?',a:['10','11','12','13'],c:2,e:'Bir yilda 12 oy bor.'},
+{q:'Qaysi son eng katta?',a:['0.8','0.08','0.18','0.5'],c:0,e:'0.8 eng katta.'},
+{q:'4 ta daftar 20 000 so‘m bo‘lsa, bittasi qancha?',a:['2 000','4 000','5 000','10 000'],c:2,e:'20 000 ÷ 4 = 5 000 so‘m.'},
+{q:'Ketma-ketlik: 1, 4, 9, 16, ...',a:['20','24','25','36'],c:2,e:'1², 2², 3², 4². Keyingisi 5² = 25.'},
+{q:'Xonaning 4 burchagida bittadan mushuk bor. Jami nechta?',a:['2','3','4','8'],c:2,e:'Jami 4 ta mushuk.'},
+{q:'Qaysi so‘z teskari o‘qilganda ham bir xil?',a:['olma','non','kitob','daraxt'],c:1,e:'“non” ikki tomondan bir xil o‘qiladi.'},
+{q:'Soat 3:00 bo‘lsa, 2 soatdan keyin nechchi?',a:['4:00','5:00','6:00','2:00'],c:1,e:'Javob 5:00.'},
+{q:'Ketma-ketlik: 5, 10, 20, 40, ...',a:['45','60','70','80'],c:3,e:'Har safar 2 ga ko‘payadi. Javob 80.'}
+];
+
+function updateStats(){
+$('totalPoints').textContent=points;
+let level=Math.floor(points/100)+1;
+$('level').textContent=level;
+$('levelHint').textContent='Keyingi daraja uchun '+(100-points%100)+' ball to‘pla.';
+$('levelProgress').style.width=(points%100)+'%';
+$('completed').textContent=completed;
+$('logicScore').textContent='Ball: '+logicPoints;
+}
+function save(){
+try{
+let today=new Date().toLocaleDateString('en-CA');
+let daily=[...document.querySelectorAll('[data-task]')].map(x=>x.checked);
+localStorage.setItem(KEY,JSON.stringify({points,completed,daily,today}));
+}catch(e){}
+}
+function addPoints(n){points+=n;updateStats();save();}
+function load(){
+try{
+let s=JSON.parse(localStorage.getItem(KEY)||'{}');
+points=Number(s.points)||0;completed=Number(s.completed)||0;
+let today=new Date().toLocaleDateString('en-CA');
+let tasks=s.today===today?s.daily:[false,false,false,false];
+document.querySelectorAll('[data-task]').forEach(el=>{
+el.checked=!!tasks[Number(el.dataset.task)];
+el.closest('.task').classList.toggle('done',el.checked);
+});
+}catch(e){}
+updateStats();
+}
+function renderQuestion(){
+answered=false;
+let q=questions[qIndex];
+$('qCounter').textContent=(qIndex+1)+' / 20-savol';
+$('logicProgress').style.width=(qIndex/20*100)+'%';
+$('questionText').textContent=q.q;
+$('choices').innerHTML='';
+$('logicFeedback').textContent='Javob variantlaridan birini tanla.';
+$('nextQuestion').disabled=true;
+q.a.forEach((ans,i)=>{
+let b=document.createElement('button');
+b.className='choice';b.textContent=String.fromCharCode(65+i)+'. '+ans;
+b.addEventListener('click',()=>choose(i,b));
+$('choices').appendChild(b);
+});
+}
+function choose(i,button){
+if(answered)return;
+answered=true;
+let q=questions[qIndex];
+[...$('choices').children].forEach((b,j)=>{
+b.disabled=true;if(j===q.c)b.classList.add('correct');
+});
+if(i===q.c){
+logicPoints+=10;addPoints(10);
+$('logicFeedback').textContent='✅ To‘g‘ri! '+q.e;
+}else{
+button.classList.add('wrong');
+$('logicFeedback').textContent='❌ Noto‘g‘ri. '+q.e;
+}
+$('logicScore').textContent='Ball: '+logicPoints;
+$('logicProgress').style.width=((qIndex+1)/20*100)+'%';
+$('nextQuestion').disabled=false;
+$('nextQuestion').textContent=qIndex===19?'Natijani ko‘rish →':'Keyingi savol →';
+}
+$('nextQuestion').addEventListener('click',()=>{
+if(!answered)return;
+if(qIndex<19){qIndex++;renderQuestion();}
+else{
+$('questionText').textContent='🎉 Test tugadi!';
+$('choices').innerHTML='';
+$('logicFeedback').textContent='Natijang: '+logicPoints+' / 200 ball. '+(logicPoints>=160?'Ajoyib natija!':logicPoints>=100?'Yaxshi ishlading!':'Mashq qilishda davom et!');
+$('nextQuestion').disabled=true;
+completed++;updateStats();save();
+}
+});
+$('restartLogic').addEventListener('click',()=>{
+qIndex=0;logicPoints=0;renderQuestion();updateStats();
+});
+function resetTyping(){
+clearInterval(timer);timer=null;time=60;started=false;ended=false;startTime=0;
+$('typingInput').value='';$('typingInput').disabled=false;
+$('timeLeft').textContent='60';$('wpm').textContent='0';$('accuracy').textContent='100%';
+$('typingMessage').textContent='Boshlash uchun matnni yozishni boshlang.';
+}
+function finishTyping(){
+if(ended)return;ended=true;clearInterval(timer);timer=null;
+$('typingInput').disabled=true;
+let typed=$('typingInput').value.trim();
+let words=typed?typed.split(/\s+/).length:0;
+let elapsed=Math.max(1,(Date.now()-startTime)/60000);
+let wpm=Math.round(words/elapsed);
+$('wpm').textContent=wpm;
+let accuracy=parseInt($('accuracy').textContent)||0;
+$('typingMessage').textContent='Sinov tugadi! Tezlik: '+wpm+' WPM, aniqlik: '+accuracy+'%.';
+if(typed){let earned=Math.max(1,Math.round(wpm/2+accuracy/20));addPoints(earned);$('typingMessage').textContent+=' +'+earned+' ball!';}
+completed++;updateStats();save();
+}
+$('typingInput').addEventListener('input',()=>{
+if(ended)return;
+let typed=$('typingInput').value;
+let sample=$('typingSample').textContent;
+if(!started&&typed.length){
+started=true;startTime=Date.now();
+timer=setInterval(()=>{
+time--;if(time<0)time=0;
+$('timeLeft').textContent=time;
+if(time<=0)finishTyping();
+},1000);
+$('typingMessage').textContent='Zo‘r! Davom et.';
+}
+let correct=0;
+for(let i=0;i<typed.length;i++){if(typed[i]===sample[i])correct++;}
+$('accuracy').textContent=(typed.length?Math.round(correct/typed.length*100):100)+'%';
+let elapsed=started?Math.max(1,(Date.now()-startTime)/60000):1;
+$('wpm').textContent=started?Math.round(typed.trim()?typed.trim().split(/\s+/).length/elapsed:0):0;
+if(typed===sample)finishTyping();
+});
+$('typingReset').addEventListener('click',resetTyping);
+document.querySelectorAll('[data-task]').forEach(el=>el.addEventListener('change',()=>{
+el.closest('.task').classList.toggle('done',el.checked);
+if(el.checked)addPoints(5);
+else{points=Math.max(0,points-5);updateStats();}
+let n=[...document.querySelectorAll('[data-task]')].filter(x=>x.checked).length;
+$('dailyMessage').textContent='Bugun '+n+'/4 ta vazifa bajarildi.';
+save();
+}));
+load();renderQuestion();
+})();
+</script>
 </body>
-  </html>
-                                            
+                                                            </html>     
