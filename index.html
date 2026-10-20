@@ -1,1 +1,122 @@
 
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brainova | Bilim olami</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0b1020;
+      color: #f4f7ff;
+    }
+    header {
+      padding: 22px 16px;
+      text-align: center;
+      background: #151d35;
+      border-bottom: 1px solid #303b5c;
+    }
+    header h1 { color: #7cdbff; margin: 0; font-size: 32px; }
+    header p { color: #b9c6e5; }
+    main { max-width: 720px; margin: auto; padding: 18px; }
+    .hero, .card {
+      background: #151d35;
+      border: 1px solid #303b5c;
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 16px;
+    }
+    .hero { text-align: center; }
+    h2 { color: #7cdbff; }
+    button {
+      background: #61d5ff;
+      color: #07111e;
+      border: 0;
+      border-radius: 10px;
+      padding: 12px 16px;
+      font-size: 16px;
+      font-weight: bold;
+      margin: 5px 3px;
+      cursor: pointer;
+    }
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #657393;
+      font-size: 16px;
+    }
+    .muted { color: #b9c6e5; line-height: 1.6; }
+    #result, #logicResult { color: #7cdbff; font-weight: bold; }
+    footer { text-align: center; color: #b9c6e5; padding: 20px; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>🧠 Brainova</h1>
+    <p>O‘yla. O‘rgan. Rivojlan.</p>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h2>Bilim olamiga xush kelibsiz!</h2>
+      <p class="muted">Mantiqingizni sinang, yozish tezligingizni tekshiring va yangi ilmiy faktlarni o‘rganing.</p>
+      <button onclick="document.getElementById('typing').scrollIntoView()">Typing test</button>
+      <button onclick="document.getElementById('logic').scrollIntoView()">Mantiqiy test</button>
+      <button onclick="document.getElementById('facts').scrollIntoView()">Ilmiy faktlar</button>
+    </section>
+
+    <section class="card" id="typing">
+      <h2>⌨️ Typing test</h2>
+      <p id="sample" class="muted">Bilim insonni yangi imkoniyatlar sari yetaklaydi.</p>
+      <input id="typingInput" placeholder="Yuqoridagi matnni shu yerga yozing">
+      <button onclick="checkTyping()">Natijani tekshirish</button>
+      <p id="result"></p>
+    </section>
+
+    <section class="card" id="logic">
+      <h2>🧩 Mantiqiy test</h2>
+      <p>2, 4, 8, 16, ?</p>
+      <button onclick="logicAnswer(24)">24</button>
+      <button onclick="logicAnswer(32)">32</button>
+      <button onclick="logicAnswer(18)">18</button>
+      <p id="logicResult"></p>
+    </section>
+
+    <section class="card" id="facts">
+      <h2>🔬 Ilmiy faktlar</h2>
+      <p class="muted">🌌 Yorug‘lik Quyoshdan Yerga taxminan 8 daqiqa 20 soniyada yetib keladi.</p>
+      <p class="muted">🐙 Ahtapotning uchta yuragi bor.</p>
+      <p class="muted">🌍 Yer o‘z o‘qi atrofida aylanishi sababli kun va tun almashinadi.</p>
+    </section>
+  </main>
+
+  <footer>© 2026 Brainova · Bilim sari bir qadam</footer>
+
+  <script>
+    function checkTyping() {
+      const sample = document.getElementById('sample').textContent;
+      const typed = document.getElementById('typingInput').value;
+      const correct = [...typed].filter((c, i) => c === sample[i]).length;
+      const accuracy = typed.length
+        ? Math.round(correct / Math.max(typed.length, sample.length) * 100)
+        : 0;
+      document.getElementById('result').textContent =
+        typed === sample
+          ? 'Ajoyib! Matn to‘g‘ri yozildi!'
+          : 'Aniqlik: ' + accuracy + '%. Matnni yana urinib ko‘ring!';
+    }
+
+    function logicAnswer(answer) {
+      document.getElementById('logicResult').textContent =
+        answer === 32 ? 'To‘g‘ri! Har safar son 2 ga ko‘paymoqda. 🎉'
+        : 'Yana urinib ko‘ring!';
+    }
+  </script>
+</body>
+  </html>
+                                            
